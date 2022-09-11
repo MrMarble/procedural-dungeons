@@ -32,7 +32,7 @@ pub fn draw_ui(mut cmds: Commands, mut egui_ctx: ResMut<EguiContext>, mut cfg: R
             ui.add_space(10.);
 
             {
-                let old_algorithm = cfg.algorithm.clone();
+                let old_algorithm = cfg.algorithm;
 
                 ui.label("Algorithm:");
                 egui::ComboBox::from_id_source("Algorithm")
@@ -51,7 +51,7 @@ pub fn draw_ui(mut cmds: Commands, mut egui_ctx: ResMut<EguiContext>, mut cfg: R
 
                 if old_algorithm != cfg.algorithm {
                     let alg = cfg.algorithm;
-                    cfg.options = alg.options().clone().to_vec();
+                    cfg.options = alg.options().to_vec();
                 }
             }
 

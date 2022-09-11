@@ -2,7 +2,7 @@ use std::fmt;
 
 use crate::map_builders::*;
 
-#[derive(Default, PartialEq, Copy, Clone)]
+#[derive(Default, PartialEq, Eq, Copy, Clone)]
 pub enum Algorithm {
     #[default]
     None = -1,
