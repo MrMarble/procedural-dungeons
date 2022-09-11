@@ -1,0 +1,46 @@
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "static/**"
+      - "Cargo.toml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install
+        run: |
+          rustup target add wasm32-unknown-unknown
+          cargo install wasm-bindgen-cli
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: cache-${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.toml') }}
+          restore-keys: |
+            cache-${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.toml') }}
+            cache-${{ runner.os }}-cargo
+
+      - name: Build
+        run: cargo build --release --target wasm32-unknown-unknown
+
+      - name: Wasm Bindgen
+        run: wasm-bindgen --no-typescript --out-dir ./build --target web ./target/wasm32-unknown-unknown/release/procedural_map.wasm
+
+      - name: Copy Assets
+        run: |
+          cp -r static build/.
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: build
+          CLEAN: true
