@@ -6,13 +6,29 @@ on:
       - "static/**"
       - "Cargo.toml"
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 jobs:
-  test:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
       - uses: actions/checkout@v2
 
-      - name: Install
+      - name: Install wasm target
         run: |
           rustup target add wasm32-unknown-unknown
           cargo install wasm-bindgen-cli
@@ -35,12 +51,13 @@ jobs:
         run: wasm-bindgen --no-typescript --out-dir ./build --target web ./target/wasm32-unknown-unknown/release/procedural-map.wasm
 
       - name: Copy Assets
-        run: |
-          cp -r static build/.
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@3.7.1
+        run: cp static/* build/.
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: build
-          CLEAN: true
+          path: 'build'
+
+      - name: Deploy 🚀
+        id: deployment
+        uses: actions/deploy-pages@v1
