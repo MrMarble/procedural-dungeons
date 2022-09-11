@@ -33,7 +33,7 @@ impl Map {
                 let (x, y) = self.idx_xy(idx);
 
                 let mut sprite = match *tile {
-                    TileType::Floor => TextureAtlasSprite::new(254),
+                    TileType::Floor => TextureAtlasSprite::new(255),
                     TileType::Wall => TextureAtlasSprite::new(self.wall_texture(x, y)),
                 };
 
