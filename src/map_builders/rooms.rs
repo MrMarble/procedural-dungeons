@@ -62,6 +62,8 @@ impl RoomsMap {
             }
         }
         // Add corridors
+        self.rooms.sort_by(|a, b| a.x1.cmp(&b.x1));
+
         for i in 0..self.rooms.len() {
             let room = &self.rooms[i];
             let (new_x, new_y) = room.center();
