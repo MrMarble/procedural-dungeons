@@ -1,8 +1,13 @@
 # Procedural map generation
+[![GitHub deployments](https://img.shields.io/github/deployments/mrmarble/procedural-dungeons/github-pages?label=deployment&logo=Github)](https://mrmarble.dev/procedural-dungeons/)
 
 This is a simple demo to visualize different map generation algorithms.
 
 > :warning: This is a work in progress. I'm still working on the algorithms and the UI. The code is full of bugs and the algorithms are not optimized.
+
+Try the wasm version: https://mrmarble.dev/procedural-dungeons/
+
+![](/assets/example.png)
 
 ## Algorithms
 
