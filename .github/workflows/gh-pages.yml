@@ -32,7 +32,7 @@ jobs:
         run: cargo build --release --target wasm32-unknown-unknown
 
       - name: Wasm Bindgen
-        run: wasm-bindgen --no-typescript --out-dir ./build --target web ./target/wasm32-unknown-unknown/release/procedural_map.wasm
+        run: wasm-bindgen --no-typescript --out-dir ./build --target web ./target/wasm32-unknown-unknown/release/procedural-map.wasm
 
       - name: Copy Assets
         run: |
