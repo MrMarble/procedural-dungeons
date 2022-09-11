@@ -23,6 +23,7 @@ struct MapComponent;
 
 struct Snapshots(VecDeque<Map>);
 struct CurrentMap(Vec<Entity>);
+pub struct TextureMap(Handle<TextureAtlas>);
 
 fn main() {
     App::new()
@@ -38,6 +39,7 @@ fn main() {
         .add_plugin(DebugPlugin)
         .add_loopless_state(States::Menu)
         .add_startup_system(spawn_camera)
+        .add_startup_system(load_assets)
         .add_system(draw_ui)
         .add_system(draw_map.run_in_state(States::Running))
         .add_enter_system(
@@ -52,6 +54,24 @@ fn despawn_with<T: Component>(mut commands: Commands, q: Query<Entity, With<T>>)
     for e in q.iter() {
         commands.entity(e).despawn_recursive();
     }
+}
+
+fn load_assets(
+    mut commands: Commands,
+    server: Res<AssetServer>,
+    mut texture_atlases: ResMut<Assets<TextureAtlas>>,
+) {
+    let texture = server.load("texture_map.png");
+    let atlas = TextureAtlas::from_grid_with_padding(
+        texture,
+        Vec2::splat(9.0),
+        16,
+        16,
+        Vec2::splat(2.0),
+        Vec2::splat(0.),
+    );
+    let handle = texture_atlases.add(atlas);
+    commands.insert_resource(TextureMap(handle));
 }
 
 fn spawn_camera(mut cmd: Commands) {
@@ -88,9 +108,14 @@ fn setup_map(cfg: Res<Config>, mut cmd: Commands) {
     cmd.insert_resource(CurrentMap(entities));
 }
 
-fn draw_map(mut cmd: Commands, mut snaps: ResMut<Snapshots>, current_map: Res<CurrentMap>) {
+fn draw_map(
+    mut cmd: Commands,
+    mut snaps: ResMut<Snapshots>,
+    current_map: Res<CurrentMap>,
+    texture: Res<TextureMap>,
+) {
     if let Some(snap) = snaps.0.pop_front() {
-        snap.draw(cmd, &current_map.0)
+        snap.draw(cmd, texture, &current_map.0)
     } else {
         println!("No more snapshots");
         cmd.insert_resource(NextState(States::Menu));
