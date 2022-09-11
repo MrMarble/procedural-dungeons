@@ -80,7 +80,7 @@ impl BspMap {
             let start_y = rng.gen_range(room.y1 + 1..room.y2);
             let end_x = rng.gen_range(next_room.x1 + 1..next_room.x2);
             let end_y = rng.gen_range(next_room.y1 + 1..next_room.y2);
-            println!("{} {} {} {}", start_x, start_y, end_x, end_y);
+
             self.draw_corridor(start_x, start_y, end_x, end_y);
             self.take_snapshot();
         }
@@ -117,7 +117,7 @@ impl BspMap {
         if self.rects.len() == 1 {
             return self.rects[0];
         }
-        let idx = (rng.gen_range(1..self.rects.len() as i32) - 1) as usize;
+        let idx = (rng.gen_range(0..self.rects.len() as i32)) as usize;
         self.rects[idx]
     }
 
@@ -126,8 +126,8 @@ impl BspMap {
         let rect_width = i32::abs(rect.x1 - rect.x2);
         let rect_height = i32::abs(rect.y1 - rect.y2);
 
-        let w = i32::max(3, rng.gen_range(1..i32::min(rect_width, 10)) - 1) + 1;
-        let h = i32::max(3, rng.gen_range(1..i32::min(rect_height, 10)) - 1) + 1;
+        let w = i32::max(3, rng.gen_range(0..i32::min(rect_width, 10))) + 1;
+        let h = i32::max(3, rng.gen_range(0..i32::min(rect_height, 10))) + 1;
 
         result.x1 += rng.gen_range(1..6) - 1;
         result.y1 += rng.gen_range(1..6) - 1;
@@ -189,7 +189,6 @@ impl BspMap {
                 y -= 1;
             }
 
-            println!("{} {}", x, y);
             let idx = self.map.xy_idx(x, y);
             self.map.tiles[idx] = Some(TileType::Floor);
         }
