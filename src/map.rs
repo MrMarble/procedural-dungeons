@@ -2,7 +2,7 @@ use bevy::prelude::*;
 
 const TILE_SIZE: i32 = 16;
 
-#[derive(Default, Clone)]
+#[derive(Default, Clone, PartialEq, Eq)]
 pub enum TileType {
     #[default]
     Floor,

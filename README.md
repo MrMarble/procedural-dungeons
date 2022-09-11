@@ -15,7 +15,7 @@ Try the wasm version: https://mrmarble.dev/procedural-dungeons/
     - Make the boundaries of the map walls and fill the rest with random walls.
 - [x] Random rooms and corridors
     - Fill the map with walls and place rooms randomly. Then connect the rooms with corridors.
-- [ ] Random rooms and corridors with BSP
+- [x] Random rooms and corridors with BSP
     - Fill the map with walls and place rooms randomly. Then connect the rooms with corridors. The rooms are placed using a binary space partitioning algorithm.
 - [ ] Random rooms and corridors with BSP interior
     - Fill the map with walls and place rooms randomly. The rooms are placed using a binary space partitioning algorithm. The entire map is filled with rooms.

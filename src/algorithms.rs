@@ -8,6 +8,7 @@ pub enum Algorithm {
     None = -1,
     Random,
     Rooms,
+    Bsp,
 }
 
 impl fmt::Display for Algorithm {
@@ -16,18 +17,20 @@ impl fmt::Display for Algorithm {
             Algorithm::None => write!(f, "None"),
             Algorithm::Random => write!(f, "Random walls"),
             Algorithm::Rooms => write!(f, "Rooms and corridors"),
+            Algorithm::Bsp => write!(f, "BSP"),
         }
     }
 }
 
 impl Algorithm {
     pub fn all() -> Vec<Self> {
-        vec![Algorithm::Random, Algorithm::Rooms]
+        vec![Algorithm::Random, Algorithm::Rooms, Algorithm::Bsp]
     }
     pub fn get(&self) -> Box<dyn MapBuilder> {
         match self {
             Algorithm::Random => Box::new(RandomMap::default()),
             Algorithm::Rooms => Box::new(RoomsMap::default()),
+            Algorithm::Bsp => Box::new(BspMap::default()),
             _ => panic!("No algorithm selected"),
         }
     }
@@ -36,6 +39,9 @@ impl Algorithm {
         match self {
             Algorithm::Random => "Place walls at the edges and randomly elsewhere",
             Algorithm::Rooms => "Place random rooms and connect them with corridors",
+            Algorithm::Bsp => {
+                "Divide the map into rooms with a binary space partitioning algorithm"
+            }
             _ => panic!("No algorithm selected"),
         }
     }
@@ -68,7 +74,13 @@ impl Algorithm {
                     max: 15,
                 },
             ],
-            _ => panic!("No algorithm selected"),
+            Algorithm::Bsp => &[Option {
+                name: "Max rooms",
+                value: 240,
+                min: 1,
+                max: 350,
+            }],
+            _ => &[],
         }
     }
 }
