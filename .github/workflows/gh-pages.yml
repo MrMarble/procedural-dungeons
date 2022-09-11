@@ -53,7 +53,9 @@ jobs:
         run: wasm-bindgen --no-typescript --out-dir ./build --target web ./target/wasm32-unknown-unknown/release/procedural-map.wasm
 
       - name: Copy Assets
-        run: cp static/* build/.
+        run: |
+          cp static/* build/.
+          cp -r assets build/.
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
