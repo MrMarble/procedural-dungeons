@@ -19,7 +19,7 @@ Try the wasm version: https://mrmarble.dev/procedural-dungeons/
     - Fill the map with walls and place rooms randomly. Then connect the rooms with corridors. The rooms are placed using a binary space partitioning algorithm.
 - [x] Random rooms with BSP interior
     - Fill the map with walls and place rooms randomly. The rooms are placed using a binary space partitioning algorithm. The entire map is filled with rooms.
-- [ ] Cellular automata
+- [x] Cellular automata
     - Fill the map with random walls. Then apply the cellular automata algorithm to smooth the map.
 - [ ] Drunkard's walk
     - Fill the map with walls, pick a random point and start walking. The drunkard will leave a trail of walls behind him.
