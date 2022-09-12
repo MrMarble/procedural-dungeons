@@ -5,7 +5,7 @@ use std::collections::VecDeque;
 use crate::algorithms::Option;
 use crate::map::{Map, TileType};
 
-use super::utils::apply_room_to_map;
+use super::common::apply_room_to_map;
 use super::{MapBuilder, Rect};
 
 #[derive(Default)]

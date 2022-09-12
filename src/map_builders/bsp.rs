@@ -4,7 +4,7 @@ use rand::{rngs::ThreadRng, Rng};
 
 use crate::{
     map::{Map, TileType},
-    map_builders::utils::apply_room_to_map,
+    map_builders::common::apply_room_to_map,
 };
 
 use super::{MapBuilder, Rect};

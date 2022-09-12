@@ -11,6 +11,7 @@ pub enum Algorithm {
     Bsp,
     BspInterior,
     CellularAutomata,
+    Drunkard,
 }
 
 impl fmt::Display for Algorithm {
@@ -22,6 +23,7 @@ impl fmt::Display for Algorithm {
             Algorithm::Bsp => write!(f, "BSP"),
             Algorithm::BspInterior => write!(f, "BSP without corridors"),
             Algorithm::CellularAutomata => write!(f, "Cellular automata"),
+            Algorithm::Drunkard => write!(f, "Drunkard's walk"),
         }
     }
 }
@@ -34,6 +36,7 @@ impl Algorithm {
             Algorithm::Bsp,
             Algorithm::BspInterior,
             Algorithm::CellularAutomata,
+            Algorithm::Drunkard,
         ]
     }
     pub fn get(&self) -> Box<dyn MapBuilder> {
@@ -43,6 +46,7 @@ impl Algorithm {
             Algorithm::Bsp => Box::new(BspMap::default()),
             Algorithm::BspInterior => Box::new(BspInteriorMap::default()),
             Algorithm::CellularAutomata => Box::new(CellularAutomataBuilder::default()),
+            Algorithm::Drunkard => Box::new(DrunkardsWalkBuilder::default()),
             _ => panic!("No algorithm selected"),
         }
     }
@@ -58,6 +62,7 @@ impl Algorithm {
                 "Divide the map into rooms with a binary space partitioning algorithm, filling the whole map"
             },
             Algorithm::CellularAutomata => "Use cellular automata to generate the map",
+            Algorithm::Drunkard => "Use a drunkard's walk to generate the map",
             _ => panic!("No algorithm selected"),
         }
     }
