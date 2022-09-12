@@ -15,7 +15,7 @@ pub struct CellularAutomataBuilder {
 impl MapBuilder for CellularAutomataBuilder {
     fn build_map(&mut self, width: i32, height: i32, options: &[crate::algorithms::Option]) {
         self.map = Map::new(width, height);
-        self.build(options[0].value as f64 / 100.0);
+        self.build(options[0].value as f64 / 100.0, options[1].value);
     }
 
     fn get_map(&self) -> Map {
@@ -30,7 +30,7 @@ impl MapBuilder for CellularAutomataBuilder {
 }
 
 impl CellularAutomataBuilder {
-    pub fn build(&mut self, floor_percent: f64) {
+    pub fn build(&mut self, floor_percent: f64, iterations: i32) {
         let mut rng = rand::thread_rng();
         self.map.tiles.fill(Some(TileType::Wall));
         self.take_snapshot();
@@ -49,7 +49,7 @@ impl CellularAutomataBuilder {
         self.take_snapshot();
 
         // Now we iteratively apply cellular automata rules
-        for _i in 0..15 {
+        for _i in 0..iterations {
             let mut newtiles = self.map.tiles.clone();
 
             for y in 1..self.map.height - 1 {

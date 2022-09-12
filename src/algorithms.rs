@@ -110,12 +110,20 @@ impl Algorithm {
                     max: 100,
                 },
             ],
-            Algorithm::CellularAutomata => &[Option {
-                name: "Floor percentage",
-                value: 55,
-                min: 1,
-                max: 100,
-            }],
+            Algorithm::CellularAutomata => &[
+                Option {
+                    name: "Floor percentage",
+                    value: 55,
+                    min: 1,
+                    max: 100,
+                },
+                Option {
+                    name: "Iterations",
+                    value: 15,
+                    min: 1,
+                    max: 100,
+                },
+            ],
             _ => &[],
         }
     }
