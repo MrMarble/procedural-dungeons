@@ -10,6 +10,7 @@ pub enum Algorithm {
     Rooms,
     Bsp,
     BspInterior,
+    CellularAutomata,
 }
 
 impl fmt::Display for Algorithm {
@@ -20,6 +21,7 @@ impl fmt::Display for Algorithm {
             Algorithm::Rooms => write!(f, "Rooms and corridors"),
             Algorithm::Bsp => write!(f, "BSP"),
             Algorithm::BspInterior => write!(f, "BSP without corridors"),
+            Algorithm::CellularAutomata => write!(f, "Cellular automata"),
         }
     }
 }
@@ -31,6 +33,7 @@ impl Algorithm {
             Algorithm::Rooms,
             Algorithm::Bsp,
             Algorithm::BspInterior,
+            Algorithm::CellularAutomata,
         ]
     }
     pub fn get(&self) -> Box<dyn MapBuilder> {
@@ -39,6 +42,7 @@ impl Algorithm {
             Algorithm::Rooms => Box::new(RoomsMap::default()),
             Algorithm::Bsp => Box::new(BspMap::default()),
             Algorithm::BspInterior => Box::new(BspInteriorMap::default()),
+            Algorithm::CellularAutomata => Box::new(CellularAutomataBuilder::default()),
             _ => panic!("No algorithm selected"),
         }
     }
@@ -53,6 +57,7 @@ impl Algorithm {
             Algorithm::BspInterior => {
                 "Divide the map into rooms with a binary space partitioning algorithm, filling the whole map"
             },
+            Algorithm::CellularAutomata => "Use cellular automata to generate the map",
             _ => panic!("No algorithm selected"),
         }
     }
@@ -105,6 +110,12 @@ impl Algorithm {
                     max: 10,
                 },
             ],
+            Algorithm::CellularAutomata => &[Option {
+                name: "Floor percentage",
+                value: 55,
+                min: 1,
+                max: 100,
+            }],
             _ => &[],
         }
     }

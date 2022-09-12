@@ -3,11 +3,13 @@ use std::collections::VecDeque;
 use crate::{algorithms::Option, map::Map};
 pub use bsp::BspMap;
 pub use bsp_interior::BspInteriorMap;
+pub use cellular_automata::CellularAutomataBuilder;
 pub use random::RandomMap;
 pub use rooms::RoomsMap;
 
 mod bsp;
 mod bsp_interior;
+mod cellular_automata;
 mod random;
 mod rooms;
 mod utils;
