@@ -17,7 +17,7 @@ pub struct BspInteriorMap {
 impl MapBuilder for BspInteriorMap {
     fn build_map(&mut self, width: i32, height: i32, options: &[crate::algorithms::Option]) {
         self.map = Map::new(width, height);
-        self.build(options[0].value, options[1].value as f64 / 10.);
+        self.build(options[0].value, options[1].value as f64 / 100.);
     }
     fn get_map(&self) -> Map {
         self.map.clone()
