@@ -1,5 +1,7 @@
 use std::collections::VecDeque;
 
+use bevy::prelude::Vec2;
+use bracket_pathfinding::prelude::DijkstraMap;
 use rand::Rng;
 
 use crate::map::{Map, TileType};
@@ -92,5 +94,43 @@ impl CellularAutomataBuilder {
             self.map.tiles = newtiles.clone();
             self.take_snapshot();
         }
+        // Find a starting point; start at the middle and walk left until we find an open tile
+        let mut starting_position =
+            Vec2::new(self.map.width as f32 / 2., self.map.height as f32 / 2.);
+        let mut start_idx = self
+            .map
+            .xy_idx(starting_position.x as i32, starting_position.y as i32);
+        while self.map.tiles[start_idx] != Some(TileType::Floor) {
+            starting_position.x -= 1.;
+            start_idx = self
+                .map
+                .xy_idx(starting_position.x as i32, starting_position.y as i32);
+        }
+        // Find all tiles we can reach from the starting point
+        let map_starts: Vec<usize> = vec![start_idx];
+        let dijkstra_map = DijkstraMap::new(
+            self.map.width,
+            self.map.height,
+            &map_starts,
+            &self.map,
+            200.0,
+        );
+        let mut exit_tile = (0, 0.0f32);
+        for (i, tile) in self.map.tiles.iter_mut().enumerate() {
+            if *tile == Some(TileType::Floor) {
+                let distance_to_start = dijkstra_map.map[i];
+                // We can't get to this tile - so we'll make it a wall
+                if distance_to_start == std::f32::MAX {
+                    *tile = Some(TileType::Wall);
+                } else {
+                    // If it is further away than our current exit candidate, move the exit
+                    if distance_to_start > exit_tile.1 {
+                        exit_tile.0 = i;
+                        exit_tile.1 = distance_to_start;
+                    }
+                }
+            }
+        }
+        self.take_snapshot();
     }
 }
