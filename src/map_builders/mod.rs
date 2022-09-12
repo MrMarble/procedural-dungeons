@@ -4,7 +4,7 @@ use crate::{algorithms::Option, map::Map};
 pub use bsp::BspMap;
 pub use bsp_interior::BspInteriorMap;
 pub use cellular_automata::CellularAutomataBuilder;
-pub use drunkard_walk::DrunkardsWalkBuilder;
+pub use drunkard_walk::*;
 pub use random::RandomMap;
 pub use rooms::RoomsMap;
 mod bsp;

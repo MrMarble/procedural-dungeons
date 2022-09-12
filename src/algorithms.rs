@@ -1,6 +1,6 @@
 use std::fmt;
 
-use crate::map_builders::*;
+use crate::{map::Map, map_builders::*};
 
 #[derive(Default, PartialEq, Eq, Copy, Clone)]
 pub enum Algorithm {
@@ -46,7 +46,7 @@ impl Algorithm {
             Algorithm::Bsp => Box::new(BspMap::default()),
             Algorithm::BspInterior => Box::new(BspInteriorMap::default()),
             Algorithm::CellularAutomata => Box::new(CellularAutomataBuilder::default()),
-            Algorithm::Drunkard => Box::new(DrunkardsWalkBuilder::default()),
+            Algorithm::Drunkard => Box::new(DrunkardsWalkBuilder::open_area()),
             _ => panic!("No algorithm selected"),
         }
     }
