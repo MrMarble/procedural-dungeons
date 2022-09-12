@@ -10,6 +10,7 @@ pub enum TileType {
     #[default]
     Floor,
     Wall,
+    Proggress,
 }
 
 #[derive(Default, Clone)]
@@ -36,6 +37,7 @@ impl Map {
                 let mut sprite = match *tile {
                     TileType::Floor => TextureAtlasSprite::new(255),
                     TileType::Wall => TextureAtlasSprite::new(self.wall_texture(x, y)),
+                    TileType::Proggress => TextureAtlasSprite::new(94),
                 };
 
                 sprite.custom_size = Some(Vec2::splat(TILE_SIZE as f32));
