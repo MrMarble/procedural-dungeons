@@ -9,6 +9,7 @@ pub enum Algorithm {
     Random,
     Rooms,
     Bsp,
+    BspInterior,
 }
 
 impl fmt::Display for Algorithm {
@@ -18,19 +19,26 @@ impl fmt::Display for Algorithm {
             Algorithm::Random => write!(f, "Random walls"),
             Algorithm::Rooms => write!(f, "Rooms and corridors"),
             Algorithm::Bsp => write!(f, "BSP"),
+            Algorithm::BspInterior => write!(f, "BSP without corridors"),
         }
     }
 }
 
 impl Algorithm {
     pub fn all() -> Vec<Self> {
-        vec![Algorithm::Random, Algorithm::Rooms, Algorithm::Bsp]
+        vec![
+            Algorithm::Random,
+            Algorithm::Rooms,
+            Algorithm::Bsp,
+            Algorithm::BspInterior,
+        ]
     }
     pub fn get(&self) -> Box<dyn MapBuilder> {
         match self {
             Algorithm::Random => Box::new(RandomMap::default()),
             Algorithm::Rooms => Box::new(RoomsMap::default()),
             Algorithm::Bsp => Box::new(BspMap::default()),
+            Algorithm::BspInterior => Box::new(BspInteriorMap::default()),
             _ => panic!("No algorithm selected"),
         }
     }
@@ -41,7 +49,10 @@ impl Algorithm {
             Algorithm::Rooms => "Place random rooms and connect them with corridors",
             Algorithm::Bsp => {
                 "Divide the map into rooms with a binary space partitioning algorithm"
-            }
+            },
+            Algorithm::BspInterior => {
+                "Divide the map into rooms with a binary space partitioning algorithm, filling the whole map"
+            },
             _ => panic!("No algorithm selected"),
         }
     }
@@ -80,6 +91,20 @@ impl Algorithm {
                 min: 1,
                 max: 350,
             }],
+            Algorithm::BspInterior => &[
+                Option {
+                    name: "Min room size",
+                    value: 6,
+                    min: 6,
+                    max: 100,
+                },
+                Option {
+                    name: "Vertical split ratio",
+                    value: 5,
+                    min: 1,
+                    max: 10,
+                },
+            ],
             _ => &[],
         }
     }

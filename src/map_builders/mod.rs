@@ -2,9 +2,12 @@ use std::collections::VecDeque;
 
 use crate::{algorithms::Option, map::Map};
 pub use bsp::BspMap;
+pub use bsp_interior::BspInteriorMap;
 pub use random::RandomMap;
 pub use rooms::RoomsMap;
+
 mod bsp;
+mod bsp_interior;
 mod random;
 mod rooms;
 mod utils;
