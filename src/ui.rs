@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 use crate::algorithms::{Algorithm, Option};
 use crate::States;
 use bevy::prelude::*;
@@ -11,6 +13,8 @@ pub struct Config {
     pub width: i32,
     pub height: i32,
     pub options: Vec<Option>,
+    delay: u64,
+    pub speed_timer: Timer,
 }
 
 impl Default for Config {
@@ -21,6 +25,8 @@ impl Default for Config {
             height: 40,
             offset: 0.,
             options: vec![],
+            delay: 100,
+            speed_timer: Timer::new(Duration::from_millis(100), true),
         }
     }
 }
@@ -56,6 +62,7 @@ pub fn draw_ui(mut cmds: Commands, mut egui_ctx: ResMut<EguiContext>, mut cfg: R
             }
 
             {
+                let old_speed = cfg.delay;
                 ui.label("Map Options:");
                 ui.group(|ui| {
                     ui.label("Width:");
@@ -63,7 +70,15 @@ pub fn draw_ui(mut cmds: Commands, mut egui_ctx: ResMut<EguiContext>, mut cfg: R
 
                     ui.label("Height:");
                     ui.add(egui::Slider::new(&mut cfg.height, 2..=100));
+
+                    ui.label("Delay:");
+                    ui.add(egui::Slider::new(&mut cfg.delay, 1..=1000));
                 });
+
+                if old_speed != cfg.delay {
+                    let duration = Duration::from_millis(cfg.delay);
+                    cfg.speed_timer = Timer::new(duration, true);
+                }
             }
 
             if cfg.algorithm != Algorithm::None {

@@ -113,11 +113,17 @@ fn draw_map(
     mut snaps: ResMut<Snapshots>,
     current_map: Res<CurrentMap>,
     texture: Res<TextureMap>,
+    mut cfg: ResMut<Config>,
+    time: Res<Time>,
 ) {
-    if let Some(snap) = snaps.0.pop_front() {
-        snap.draw(cmd, texture, &current_map.0)
-    } else {
-        println!("No more snapshots");
-        cmd.insert_resource(NextState(States::Menu));
+    // tick the timer
+    cfg.speed_timer.tick(time.delta());
+    if cfg.speed_timer.finished() {
+        if let Some(snap) = snaps.0.pop_front() {
+            snap.draw(cmd, texture, &current_map.0)
+        } else {
+            println!("No more snapshots");
+            cmd.insert_resource(NextState(States::Menu));
+        }
     }
 }
