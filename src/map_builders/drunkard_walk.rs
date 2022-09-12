@@ -1,7 +1,6 @@
 use std::collections::VecDeque;
 
 use bevy::prelude::Vec2;
-use bracket_pathfinding::prelude::DijkstraMap;
 use rand::Rng;
 
 use crate::map::{Map, TileType};
@@ -54,45 +53,6 @@ impl DrunkardsWalkBuilder {
         }
     }
 
-    pub fn open_area() -> DrunkardsWalkBuilder {
-        DrunkardsWalkBuilder {
-            map: Map::default(),
-            starting_position: Vec2::new(0., 0.),
-            snapshots: VecDeque::new(),
-            settings: DrunkardSettings {
-                spawn_mode: DrunkSpawnMode::StartingPoint,
-                drunken_lifetime: 400,
-                floor_percent: 0.5,
-            },
-        }
-    }
-
-    pub fn open_halls() -> DrunkardsWalkBuilder {
-        DrunkardsWalkBuilder {
-            map: Map::default(),
-            starting_position: Vec2::new(0., 0.),
-            snapshots: VecDeque::new(),
-            settings: DrunkardSettings {
-                spawn_mode: DrunkSpawnMode::Random,
-                drunken_lifetime: 400,
-                floor_percent: 0.5,
-            },
-        }
-    }
-
-    pub fn winding_passages() -> DrunkardsWalkBuilder {
-        DrunkardsWalkBuilder {
-            map: Map::default(),
-            starting_position: Vec2::new(0., 0.),
-            snapshots: VecDeque::new(),
-            settings: DrunkardSettings {
-                spawn_mode: DrunkSpawnMode::Random,
-                drunken_lifetime: 100,
-                floor_percent: 0.4,
-            },
-        }
-    }
-
     pub fn build(&mut self) {
         let mut rng = rand::thread_rng();
         self.map.tiles.fill(Some(TileType::Wall));
@@ -113,7 +73,6 @@ impl DrunkardsWalkBuilder {
             .filter(|a| **a == Some(TileType::Floor))
             .count();
         let mut digger_count = 0;
-        let mut active_digger_count = 0;
 
         while floor_tile_count < desired_floor_tiles {
             let mut did_something = false;
@@ -171,7 +130,6 @@ impl DrunkardsWalkBuilder {
             }
             if did_something {
                 self.take_snapshot();
-                active_digger_count += 1;
             }
 
             digger_count += 1;

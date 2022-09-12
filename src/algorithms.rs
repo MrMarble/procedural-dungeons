@@ -46,7 +46,11 @@ impl Algorithm {
             Algorithm::Bsp => Box::new(BspMap::default()),
             Algorithm::BspInterior => Box::new(BspInteriorMap::default()),
             Algorithm::CellularAutomata => Box::new(CellularAutomataBuilder::default()),
-            Algorithm::Drunkard => Box::new(DrunkardsWalkBuilder::open_area()),
+            Algorithm::Drunkard => Box::new(DrunkardsWalkBuilder::new(DrunkardSettings {
+                spawn_mode: DrunkSpawnMode::Random,
+                drunken_lifetime: 100,
+                floor_percent: 0.4,
+            })),
             _ => panic!("No algorithm selected"),
         }
     }
